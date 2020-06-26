@@ -1,10 +1,9 @@
-
 import glob
 import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-path = '/Users/SAR/Desktop/CIRCE/Testing/Responses/'
+path = '/Users/SAR/Desktop/CIRCE/Testing/Responses/post-vibe'
 pair_hex = []
 rsp_ids = []
 for filename in glob.glob(os.path.join(path, '*.pkt')):    
@@ -15,6 +14,7 @@ for filename in glob.glob(os.path.join(path, '*.pkt')):
         rsp_ids.append(b)
 
 print("Number of files:", len(pair_hex))
+print("List of ID's", rsp_ids)
 
 flatten_hex = [item for items in pair_hex for item in items]
 packet_num = (len(flatten_hex)//(90+174))
@@ -65,7 +65,7 @@ plt.hist(data, bins=10, alpha=0.5)
 plt.xlabel('Time')
 plt.ylabel('Count')
 
-plt.show()
+#plt.show()
 
 '''
 try:
