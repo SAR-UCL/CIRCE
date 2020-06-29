@@ -43,7 +43,7 @@ class StimPackets():
     def prepare_stim_packs(self):
         info = GetPackets() #call GetPackets class
         info.load_packets()
-
+        
         stim_only = []
         for i in info.split_packets:
             if i [0] == '04':
