@@ -154,8 +154,8 @@ class SciencePackets():
             print ("File creation failed")
         
 
-main_info = PacketInfo()
-main_info.basic_info()
+#main_info = PacketInfo()
+#main_info.basic_info()
 
 stim = StimPackets()
 stim.prepare_stim_packs()
