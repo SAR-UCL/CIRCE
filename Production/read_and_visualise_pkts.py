@@ -5,7 +5,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-path = '/Users/SAR/Desktop/CIRCE/Testing/Responses/post-vibe'
+#path = '/Users/SAR/Desktop/CIRCE/Testing/Responses/Pre-vibe'
+path = '/Users/SAR/Downloads/BCT-INMS-EM1-Data/2020-04-16-INMS_04/'
 
 class GetPackets():
 
@@ -38,6 +39,34 @@ class PacketInfo():
         print("Number of Files:", len(info_s.pair_hex))
         print("Number of packets in files:", info_s.packet_num)
 
+        self.identify_packets()
+
+    ''' Check for the number and type of packet outputs'''
+    def identify_packets(self):
+
+        info_s = GetPackets() #call GetPackets class
+        info_s.load_packets()
+
+        flattened_rsp = [item for items in info_s.rsp_ids for item in items]
+        if any('04' in s for s in flattened_rsp ):
+            print("Stimulation packets (04):", flattened_rsp.count('04'))
+        if any('06' in s for s in flattened_rsp ):
+            print("Health check packets (06):", flattened_rsp.count('06'))
+        if any('07' in s for s in flattened_rsp ):
+            print("Calibration packets (07):", flattened_rsp.count('07'))
+        if any('08' in s for s in flattened_rsp ):
+            print("Science packets (08):", flattened_rsp.count('08'))
+        if any('09' in s for s in flattened_rsp ):
+            print("House keeping packets (09):", flattened_rsp.count('09'))
+        if any('0a' in s for s in flattened_rsp ):
+            print("Stm packets (0a):", flattened_rsp.count('0a'))
+        if any('0b' in s for s in flattened_rsp ):
+            print("Dump packets (0b):", flattened_rsp.count('0b'))
+        if any('bb' in s for s in flattened_rsp ):
+            print ("Error packets (bb):", flattened_rsp.count('bb'))
+        if any('fa' in s for s in flattened_rsp ):
+            print ("OBC error packets (fa):", flattened_rsp.count('fa'))
+
 class StimPackets():
 
     def prepare_stim_packs(self):
@@ -54,14 +83,14 @@ class StimPackets():
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
         self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
         
-        print("Number of STIM Packets:", len(flatten_stim)//172)
+        #print("Number of STIM Packets:", len(flatten_stim)//172)
 
         self.plot_stim_packs()
 
     def plot_stim_packs(self):
         stim_data = self.little_endian
         
-        plt.hist(stim_data, bins=10, alpha=1)
+        plt.hist(stim_data, bins=30, alpha=1)
         plt.xlabel('Time')
         plt.ylabel('Count')
         
@@ -122,7 +151,7 @@ class SciencePackets():
         info.load_packets()
 
         stim_only = []
-        burst_only = []
+        #burst_only = []
         for i in info.split_packets:
             if i [0] == '08':
                 j = i[2::] #Removes id and seq count
@@ -153,9 +182,8 @@ class SciencePackets():
         except IOError:
             print ("File creation failed")
         
-
-#main_info = PacketInfo()
-#main_info.basic_info()
+main_info = PacketInfo()
+main_info.basic_info()
 
 stim = StimPackets()
 stim.prepare_stim_packs()
