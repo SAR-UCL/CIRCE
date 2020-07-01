@@ -5,8 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-#path = '/Users/SAR/Desktop/CIRCE/Testing/Responses/Pre-vibe'
-path = '/Users/SAR/Downloads/BCT-INMS-EM1-Data/2020-04-16-INMS_04/'
+path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Post-Vibe' 
 
 class GetPackets():
 
@@ -37,7 +36,7 @@ class PacketInfo():
         info_s.load_packets()
 
         print("Number of Files:", len(info_s.pair_hex))
-        print("Number of packets in files:", info_s.packet_num)
+        print("Number of packets in files:", info_s.packet_num, '\n')
 
         self.identify_packets()
 
@@ -48,6 +47,7 @@ class PacketInfo():
         info_s.load_packets()
 
         flattened_rsp = [item for items in info_s.rsp_ids for item in items]
+        print ("Number of different packets:")
         if any('04' in s for s in flattened_rsp ):
             print("Stimulation packets (04):", flattened_rsp.count('04'))
         if any('06' in s for s in flattened_rsp ):
@@ -185,8 +185,8 @@ class SciencePackets():
 main_info = PacketInfo()
 main_info.basic_info()
 
-stim = StimPackets()
-stim.prepare_stim_packs()
+#stim = StimPackets()
+#stim.prepare_stim_packs()
 
 #hk = HouseKeepingPackets()
 #hk.prepare_HK_packs()
