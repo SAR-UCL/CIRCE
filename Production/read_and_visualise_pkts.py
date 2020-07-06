@@ -35,7 +35,7 @@ class PacketInfo():
         info_s = GetPackets() #call GetPackets class
         info_s.load_packets()
 
-        print("Number of Files:", len(info_s.pair_hex))
+        print("Number of files:", len(info_s.pair_hex))
         print("Number of packets in files:", info_s.packet_num, '\n')
 
         self.identify_packets()
@@ -48,23 +48,23 @@ class PacketInfo():
 
         flattened_rsp = [item for items in info_s.rsp_ids for item in items]
         print ("Number of different packets:")
-        if any('04' in s for s in flattened_rsp ):
+        if any('04' in s for s in flattened_rsp):
             print("Stimulation packets (04):", flattened_rsp.count('04'))
-        if any('06' in s for s in flattened_rsp ):
+        if any('06' in s for s in flattened_rsp):
             print("Health check packets (06):", flattened_rsp.count('06'))
-        if any('07' in s for s in flattened_rsp ):
+        if any('07' in s for s in flattened_rsp):
             print("Calibration packets (07):", flattened_rsp.count('07'))
-        if any('08' in s for s in flattened_rsp ):
+        if any('08' in s for s in flattened_rsp):
             print("Science packets (08):", flattened_rsp.count('08'))
-        if any('09' in s for s in flattened_rsp ):
+        if any('09' in s for s in flattened_rsp):
             print("House keeping packets (09):", flattened_rsp.count('09'))
-        if any('0a' in s for s in flattened_rsp ):
+        if any('0a' in s for s in flattened_rsp):
             print("Stm packets (0a):", flattened_rsp.count('0a'))
-        if any('0b' in s for s in flattened_rsp ):
+        if any('0b' in s for s in flattened_rsp):
             print("Dump packets (0b):", flattened_rsp.count('0b'))
-        if any('bb' in s for s in flattened_rsp ):
+        if any('bb' in s for s in flattened_rsp):
             print ("Error packets (bb):", flattened_rsp.count('bb'))
-        if any('fa' in s for s in flattened_rsp ):
+        if any('fa' in s for s in flattened_rsp):
             print ("OBC error packets (fa):", flattened_rsp.count('fa'))
 
 class StimPackets():
