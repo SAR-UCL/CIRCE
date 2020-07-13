@@ -17,5 +17,5 @@ variable on the 8th line.
 STIM packets uncomment lines 118 and 119. 
 
 
-Created by Sachin Alexander Reddy, July 2020 please see license for use. 
+Created by Sachin Alexander Reddy, July 2020
 
