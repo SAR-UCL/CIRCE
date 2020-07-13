@@ -5,9 +5,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-#path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Science'
-path = r'PATH' 
+path = r'PLEASE INPUT THE PATH IN HERE' 
 
+'''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
 
     def load_packets(self):
@@ -32,6 +32,7 @@ class GetPackets():
             self.split_packets.append(y)
         #ßprint (self.split_packets)
 
+'''This class identifies the number and different types of packets'''
 class PacketInfo():
 
     def basic_info(self):
@@ -70,6 +71,7 @@ class PacketInfo():
         if any('fa' in s for s in flattened_rsp):
             print ("OBC error packets (fa):", flattened_rsp.count('fa'))
 
+'''This class focuses on the STIM packets, and visualises them in a histogram'''
 class StimPackets():
 
     def prepare_stim_packs(self):
@@ -108,88 +110,10 @@ class StimPackets():
             print ("File creation failed")
         '''
 
-class HouseKeepingPackets():
-    
-    def prepare_HK_packs(self):
-
-        info = GetPackets() #call GetPackets class
-        info.load_packets()
-
-        stim_only = []
-        for i in info.split_packets:
-            if i [0] == '09':
-                j = i[2::] #Removes id and seq count
-                stim_only.append(j)
-        
-        flatten_stim = [item for items in stim_only for item in items]
-        endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
-        self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
-        
-        print("Number of House Keeping Packets:", len(flatten_stim)//172)
-
-        #self.plot_stim_packs()
-
-    def plot_HK_packs(self):
-        stim_data = self.little_endian
-        
-        plt.hist(stim_data, bins=10, alpha=1) #alpha is transparency
-        plt.xlabel('Time')
-        plt.ylabel('Count')
-        
-        plt.show()
-
-        '''
-        try:
-            plt.savefig("CIRCE_figs/STIM-04_FM1-2_b800.png", bbox_inches='tight')
-            print ("File saved")
-        except IOError:
-            print ("File creation failed")
-        '''
-
-class SciencePackets():
-    
-    def prepare_HK_packs(self):
-
-        info = GetPackets() #call GetPackets class
-        info.load_packets()
-
-        stim_only = []
-        #burst_only = []
-        for i in info.split_packets:
-            if i [0] == '08':
-                j = i[2::] #Removes id and seq count
-                stim_only.append(j)
-        
-        flatten_stim = [item for items in stim_only for item in items]
-        endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
-        self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
-        
-        print("Number of House Keeping Packets:", len(flatten_stim)//172)
-
-        #self.plot_stim_packs()
-
-    def plot_HK_packs(self):
-        stim_data = self.little_endian
-        
-        plt.hist(stim_data, bins=10, alpha =1)
-        plt.xlabel('Time')
-        plt.ylabel('Count')
-        
-        plt.show()
-
-        
-        try:
-            '''File format: TBD'''    
-            plt.savefig("Figures/Science_1.png", bbox_inches='tight')
-            print ("File saved")
-        except IOError:
-            print ("File creation failed")
-        
+'''Leave uncommented'''        
 main_info = PacketInfo()
 main_info.basic_info()
 
+'''Uncomment if STIM info needed'''
 #stim = StimPackets()
 #stim.prepare_stim_packs()
-
-#hk = HouseKeepingPackets()
-#hk.prepare_HK_packs()
