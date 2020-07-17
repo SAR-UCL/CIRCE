@@ -5,7 +5,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Post-Vibe'
+path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Pre-Vibe'
+#path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In'
 
 
 class GetPackets():
@@ -19,6 +20,7 @@ class GetPackets():
                 b = a[90::264] #Remove 90B Header
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
+        print(self.pair_hex)
         #print (self.rsp_ids)
         self.prepare_packets()
 
@@ -27,10 +29,11 @@ class GetPackets():
         self.packet_num = (len(flatten_hex)//(90+174))
         z = np.array_split(flatten_hex, self.packet_num) 
         self.split_packets = []
+        print(self_packets)
         for x in z:
             y = (list(x[90::])) #Remove 90B Header
             self.split_packets.append(y)
-        #ßprint (self.split_packets)
+        print (self.split_packets)
 
 class PacketInfo():
 
@@ -81,6 +84,7 @@ class StimPackets():
             if i [0] == '04':
                 j = i[2::] #Removes id and seq count
                 stim_only.append(j)
+        print(stim_only)
         
         flatten_stim = [item for items in stim_only for item in items]
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
@@ -88,14 +92,16 @@ class StimPackets():
         
         #print("Number of STIM Packets:", len(flatten_stim)//172)
 
-        self.plot_stim_packs()
+        #self.plot_stim_packs()
 
     def plot_stim_packs(self):
         stim_data = self.little_endian
         
+
+        3
         plt.hist(stim_data, bins=30, alpha=1)
         plt.xlabel('Time')
-        plt.ylabel('Count')
+        plt.ylabel('Counts/bin')
         
         plt.show()
 
@@ -148,27 +154,36 @@ class HouseKeepingPackets():
 
 class SciencePackets():
     
-    def prepare_HK_packs(self):
+    def prepare_sci_packs(self):
 
         info = GetPackets() #call GetPackets class
         info.load_packets()
 
-        stim_only = []
+        sci_only = []
         #burst_only = []
         for i in info.split_packets:
             if i [0] == '08':
-                j = i[2::] #Removes id and seq count
-                stim_only.append(j)
+                j = i[4::] #Removes id, seq count, i_ion & vpk
+                sci_only.append(j)
+        print(sci_only)
+
+        for a in sci_only:
+            ion_burst_1 = a[5:21]
+            ion_burst_2 = a[22:38]
+            ion_burst_3 = a[38:54]
+            e_burst_1 = a[56:72]
+            e_burst_2 = a[72:88]
+            e_burst_3 = a[88:104]
         
-        flatten_stim = [item for items in stim_only for item in items]
+        flatten_stim = [item for items in sci_only for item in items]
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
         self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
         
-        print("Number of House Keeping Packets:", len(flatten_stim)//172)
+        #print("Number of House Keeping Packets:", len(flatten_stim)//172)
 
         #self.plot_stim_packs()
 
-    def plot_HK_packs(self):
+    def plot_sci_packs(self):
         stim_data = self.little_endian
         
         plt.hist(stim_data, bins=10, alpha =1)
@@ -176,7 +191,6 @@ class SciencePackets():
         plt.ylabel('Count')
         
         plt.show()
-
         
         try:
             '''File format: TBD'''    
@@ -188,8 +202,8 @@ class SciencePackets():
 main_info = PacketInfo()
 main_info.basic_info()
 
-stim = StimPackets()
-stim.prepare_stim_packs()
+#stim = StimPackets()
+#stim.prepare_stim_packs()
 
-#hk = HouseKeepingPackets()
-#hk.prepare_HK_packs()
+#sci = SciencePackets()
+#sci.prepare_sci_packs()
