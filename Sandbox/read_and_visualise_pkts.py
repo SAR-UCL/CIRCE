@@ -20,7 +20,7 @@ class GetPackets():
                 b = a[90::264] #Remove 90B Header
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
-        print(self.pair_hex)
+        #print(self.pair_hex)
         #print (self.rsp_ids)
         self.prepare_packets()
 
@@ -29,11 +29,10 @@ class GetPackets():
         self.packet_num = (len(flatten_hex)//(90+174))
         z = np.array_split(flatten_hex, self.packet_num) 
         self.split_packets = []
-        print(self_packets)
         for x in z:
             y = (list(x[90::])) #Remove 90B Header
             self.split_packets.append(y)
-        print (self.split_packets)
+        #print (self.split_packets)
 
 class PacketInfo():
 
@@ -84,12 +83,14 @@ class StimPackets():
             if i [0] == '04':
                 j = i[2::] #Removes id and seq count
                 stim_only.append(j)
-        print(stim_only)
+        #print(stim_only)
         
         flatten_stim = [item for items in stim_only for item in items]
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
+        print(endian_pairs)
         self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
-        
+        print(self.little_endian)
+
         #print("Number of STIM Packets:", len(flatten_stim)//172)
 
         #self.plot_stim_packs()
@@ -202,8 +203,8 @@ class SciencePackets():
 main_info = PacketInfo()
 main_info.basic_info()
 
-#stim = StimPackets()
-#stim.prepare_stim_packs()
+stim = StimPackets()
+stim.prepare_stim_packs()
 
 #sci = SciencePackets()
 #sci.prepare_sci_packs()
