@@ -87,19 +87,17 @@ class StimPackets():
         
         flatten_stim = [item for items in stim_only for item in items]
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
-        print(endian_pairs)
+        #print(endian_pairs)
         self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
-        print(self.little_endian)
+        #print(self.little_endian)
 
         #print("Number of STIM Packets:", len(flatten_stim)//172)
 
-        #self.plot_stim_packs()
+        self.plot_stim_packs()
 
     def plot_stim_packs(self):
         stim_data = self.little_endian
-        
 
-        3
         plt.hist(stim_data, bins=30, alpha=1)
         plt.xlabel('Time')
         plt.ylabel('Counts/bin')
