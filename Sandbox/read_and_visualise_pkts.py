@@ -5,8 +5,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Pre-Vibe'
-#path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In'
+#path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/Post-Vibe'
+path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In'
 
 
 class GetPackets():
@@ -201,8 +201,8 @@ class SciencePackets():
 main_info = PacketInfo()
 main_info.basic_info()
 
-stim = StimPackets()
-stim.prepare_stim_packs()
+#stim = StimPackets()
+#stim.prepare_stim_packs()
 
 #sci = SciencePackets()
 #sci.prepare_sci_packs()

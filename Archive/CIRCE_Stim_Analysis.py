@@ -55,7 +55,7 @@ def identify_packets():
     if any('fa' in s for s in rsp_ids):
         print (rsp_ids.count('fa'), "obc error packets (fa)")
 
-#identify_packets()
+identify_packets()
 
 class packets_index():
     def get_packets_index(self,listOfElements, element):
