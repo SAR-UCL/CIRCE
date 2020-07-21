@@ -96,8 +96,9 @@ class StimPackets():
         stim_data = self.little_endian
         
         plt.hist(stim_data, bins=30, alpha=1)
-        plt.xlabel('Time')
-        plt.ylabel('Count')
+        plt.title('Stimulation Packet Counts')
+        plt.xlabel('Time (seconds)')
+        plt.ylabel('Count (bursts) ')
         
         plt.show()
 
@@ -115,5 +116,5 @@ main_info = PacketInfo()
 main_info.basic_info()
 
 '''Uncomment if STIM info needed'''
-#stim = StimPackets()
-#stim.prepare_stim_packs()
+stim = StimPackets()
+stim.prepare_stim_packs()
