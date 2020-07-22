@@ -21,7 +21,7 @@ class GetPackets():
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
         #print(self.pair_hex)
-        print (self.rsp_ids)
+        #print (self.rsp_ids)
         self.prepare_packets()
 
     def prepare_packets(self):
@@ -32,7 +32,7 @@ class GetPackets():
         for x in z:
             y = (list(x[90::])) #Remove 90B Header
             self.split_packets.append(y)
-        #print (self.split_packets)
+        print (self.split_packets)
 
 class PacketInfo():
 
@@ -201,8 +201,8 @@ class SciencePackets():
 main_info = PacketInfo()
 main_info.basic_info()
 
-#stim = StimPackets()
-#stim.prepare_stim_packs()
+stim = StimPackets()
+stim.prepare_stim_packs()
 
 #sci = SciencePackets()
 #sci.prepare_sci_packs()
