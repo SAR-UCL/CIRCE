@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-path = r'PLEASE INPUT THE PATH IN HERE' 
+path = r'//Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/EM1/06' 
 
 '''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
@@ -19,7 +19,7 @@ class GetPackets():
                 b = a[90::264] #Remove 90B Header
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
-        #print (self.rsp_ids)
+        print (self.rsp_ids)
         self.prepare_packets()
 
     def prepare_packets(self):
@@ -40,7 +40,7 @@ class PacketInfo():
         info_s.load_packets()
 
         print("Number of files:", len(info_s.pair_hex))
-        print("Number of packets in files:", info_s.packet_num, '\n')
+        print("Number of packets in files:", info_s.packet_num)
 
         self.identify_packets()
 
@@ -116,5 +116,5 @@ main_info = PacketInfo()
 main_info.basic_info()
 
 '''Uncomment if STIM info needed'''
-stim = StimPackets()
-stim.prepare_stim_packs()
+#stim = StimPackets()
+#stim.prepare_stim_packs()
