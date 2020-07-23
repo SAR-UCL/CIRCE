@@ -23,13 +23,20 @@ flatten_binary = [i for j in all_files_binary for i in j]
 num_of_pkts = (len(flatten_binary)//264)
 print('Number of packets in files:', num_of_pkts)
 
-'''Places packets into an np array and removes the header'''
+'''Extract the pkt info ONLY'''
 pkt_size = np.array_split(flatten_binary, num_of_pkts)
 div_pkts = []
 for x in pkt_size:
-    y = list((x[90::])) #CIRCE header is 90B. Change as necessary
+    y = list(x[90::]) #CIRCE header is 90B. Change as necessary
     div_pkts.append(y)
 #print ('(Number of) packets without headers', (div_pkts))
+
+'''Extract the header info ONLY (IN DEVELOPMENT)'''
+div_header = []
+for x in pkt_size:
+    y = list(x[0:90]) #CIRCE header is 90B. Change as necessary
+    div_header.append(y)
+print ('Header information:', div_header)
 
 def extractScienceData():
 
@@ -99,7 +106,7 @@ def extractScienceData():
             convert_to_int_max = [int(i,2) for i in j] #Converts to from 12-bit binary to integer
             twelvebit_bigendian_max.append(convert_to_int_max)
 
-        print('Burst Max',twelvebit_bigendian_max)
+        #print('Burst Max',twelvebit_bigendian_max)
         return(twelvebit_bigendian_max)
         
     '''Plot the data for the max burst groups'''
@@ -128,6 +135,9 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
 
-    plotMaxBurstData()
+    #plotMaxBurstData()
 
 extractScienceData()
+
+def extractHeaderData():
+    
