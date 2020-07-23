@@ -3,8 +3,7 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-#path = r'/Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In'
-path = r'//Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/EM1/08' 
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
 
 '''Opens all files in path as 8-bit'''
 all_files_binary = []
@@ -139,5 +138,5 @@ def extractScienceData():
 
 extractScienceData()
 
-def extractHeaderData():
+#def extractHeaderData():
     
