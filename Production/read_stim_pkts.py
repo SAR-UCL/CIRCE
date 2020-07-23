@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-path = r'//Users/SAR/Documents/2. Academia/2. UCL/PhD/CIRCE/Data In/Testing/Responses/EM1/06' 
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM2_post_vibe'
 
 '''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
@@ -19,7 +19,7 @@ class GetPackets():
                 b = a[90::264] #Remove 90B Header
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
-        print (self.rsp_ids)
+        #print (self.rsp_ids)
         self.prepare_packets()
 
     def prepare_packets(self):
@@ -30,7 +30,7 @@ class GetPackets():
         for x in z:
             y = (list(x[90::])) #Remove 90B Header
             self.split_packets.append(y)
-        #ßprint (self.split_packets)
+        #print (self.split_packets)
 
 '''This class identifies the number and different types of packets'''
 class PacketInfo():
@@ -51,7 +51,7 @@ class PacketInfo():
         info_s.load_packets()
 
         flattened_rsp = [item for items in info_s.rsp_ids for item in items]
-        print ("Number of different packets:")
+        #print ("Number of different packets:")
         if any('04' in s for s in flattened_rsp):
             print("Stimulation packets (04):", flattened_rsp.count('04'))
         if any('06' in s for s in flattened_rsp):

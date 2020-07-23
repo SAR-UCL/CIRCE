@@ -22,7 +22,7 @@ flatten_binary = [i for j in all_files_binary for i in j]
 num_of_pkts = (len(flatten_binary)//264)
 print('Number of packets in files:', num_of_pkts)
 
-'''Extract the pkt info ONLY'''
+'''Extracts the pkt info ONLY'''
 pkt_size = np.array_split(flatten_binary, num_of_pkts)
 div_pkts = []
 for x in pkt_size:
@@ -30,21 +30,21 @@ for x in pkt_size:
     div_pkts.append(y)
 #print ('(Number of) packets without headers', (div_pkts))
 
-'''Extract the header info ONLY (IN DEVELOPMENT)'''
+'''Extracts the header info ONLY (IN DEVELOPMENT)'''
 div_header = []
 for x in pkt_size:
     y = list(x[0:90]) #CIRCE header is 90B. Change as necessary
     div_header.append(y)
-print ('Header information:', div_header)
+#print ('Header information:', div_header)
 
 def extractScienceData():
 
-    '''Identifies sci pkts and disregards the others'''
+    '''Identifies sci pkts and splits into single bits'''
     sci_only = []
     for i in div_pkts:
         if i [0] == '00001000': #this is 08 in hex
-            joined_pkts = "".join(j for j in i)
-            relist_pkts = (list(j for j in joined_pkts))
+            joined_pkts = "".join(j for j in i) #merge into single string
+            relist_pkts = (list(j for j in joined_pkts)) #split into list
             sci_only.append(relist_pkts)
     print ('Number of science pkts:', len(sci_only))
 
@@ -80,7 +80,7 @@ def extractScienceData():
 
         '''Plot the data'''
         burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
-        burst_group_hist = [i for j in burst_group_data for i in j] #needs to be flattened into a single list
+        burst_group_hist = [i for j in burst_group_data for i in j] #Flattened into one list
         
         plt.hist(burst_group_hist, bins = 75, alpha = 1)
         plt.title('EM1_08 Energy, Burst Count 0-16, Groups 1-6')
@@ -88,7 +88,7 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
 
-    #plotGroupBurstData()
+    plotGroupBurstData()
 
     '''Get 12-bit integers from max burst groups'''
     def getIntegersFromBurstMax(startIndex):
