@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 '''Set directory and extract basic info'''
 path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM2_post_vibe'
 
+
 '''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
 

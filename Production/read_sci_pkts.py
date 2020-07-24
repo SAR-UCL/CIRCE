@@ -84,7 +84,7 @@ def extractScienceData():
         
         plt.hist(burst_group_hist, bins = 75, alpha = 1)
         plt.title('EM1_08 Energy, Burst Count 0-16, Groups 1-6')
-        plt.xlabel('Energy? ev?')
+        plt.xlabel('Energy (eV)')
         plt.ylabel('Counts')
         plt.show()
 
@@ -126,7 +126,7 @@ def extractScienceData():
         print (burst_max_single_data)
 
         '''Plot the data'''
-        burst_max_hist = [i for j in burst_max_data for i in j]
+        burst_max_hist = [i for j in burst_max_data for i in j if i != 0] #Flatten and remove zero values
         plt.hist(burst_max_hist, bins = 75, alpha = 1)
 
         plt.title('EM1_08 Energy, Max Bursts Count 0-3, Groups 1-4')
@@ -137,6 +137,3 @@ def extractScienceData():
     #plotMaxBurstData()
 
 extractScienceData()
-
-#def extractHeaderData():
-    
