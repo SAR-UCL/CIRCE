@@ -3,7 +3,7 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/06'
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
 
 '''Opens all files in path as 8-bit'''
 all_files_binary = []
@@ -46,12 +46,6 @@ def extractScienceData():
             joined_pkts = "".join(j for j in i) #merge into single string
             relist_pkts = (list(j for j in joined_pkts)) #split into list
             sci_only.append(relist_pkts)
-            print ('Number of science pkts:', len(sci_only))
-            plotGroupBurstData()
-            break
-        else:
-            print ('There are no science packets in these files')
-            break
 
     '''Get 12-bit integers from main burst groups'''
     def getIntegersFromBurstGroup(startIndex):
@@ -93,7 +87,7 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
 
-        plotMaxBurstData()
+    plotGroupBurstData()
 
     '''Get 12-bit integers from max burst groups'''
     def getIntegersFromBurstMax(startIndex):
@@ -138,5 +132,7 @@ def extractScienceData():
         plt.xlabel('Energy (eV)')
         plt.ylabel('Counts')
         plt.show()
+    
+    plotMaxBurstData()
 
 extractScienceData()
