@@ -4,10 +4,9 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-'''Set directory and extract basic info'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/06'
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/03'
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL'
+'''Set directory'''
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
+#path = r'Change me as necessary'
 
 
 '''This class extracts the packets from the files and prepares them for reading'''
@@ -20,7 +19,7 @@ class GetPackets():
             with open(os.path.join(os.getcwd(), filename), 'rb') as f:
                 a = ["{:02x}".format(c) for c in f.read()] #Opens as hex
                 b = a[90::264] #Remove 90B Header
-                self.filenames = os.path.basename(f.name)
+                self.filenames = os.path.basename(f.name) #Print all filenames (Not working yet)
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
         #print (self.rsp_ids)
@@ -43,7 +42,7 @@ class PacketInfo():
         info_s = GetPackets() #call GetPackets class
         info_s.load_packets()
 
-        print("Filename:", info_s.filenames)
+        #print("Filename:", info_s.filenames)
         print("Number of files:", len(info_s.pair_hex))
         print("Number of packets in files:", info_s.packet_num)
 
@@ -75,9 +74,6 @@ class PacketInfo():
             print ("Error packets (bb):", flattened_rsp.count('bb'))
         if any('fa' in s for s in flattened_rsp):
             print ("OBC error packets (fa):", flattened_rsp.count('fa'))
-
-'''This class focuses on the STIM packets, and visualises them in a histogram'''
-class StimPackets():
 
     def prepare_stim_packs(self):
         info = GetPackets() #call GetPackets class
@@ -116,10 +112,7 @@ class StimPackets():
             print ("File creation failed")
         '''
 
-'''Leave uncommented'''        
-main_info = PacketInfo()
-main_info.basic_info()
+'''Creates an instance of the class (an Object)'''      
+go_pkt_info = PacketInfo()
+go_pkt_info.basic_info()
 
-'''Uncomment if STIM info needed'''
-#stim = StimPackets()
-#stim.prepare_stim_packs()
