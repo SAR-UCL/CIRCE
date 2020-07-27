@@ -198,8 +198,8 @@ puts("Powering off the payload...")
 
 cmd("UUT SET_LOAD_SWITCH with SWITCH_NUM IO7_OUT_INMS_3P3V, STATUS OFF")
 cmd("UUT SET_LOAD_SWITCH with SWITCH_NUM IO17_OUT_INMS_5V, STATUS OFF")
-wait_check("UUT POWER IO7_OUT_INMS_3P3V == 'OFF'",5)
-wait_check("UUT POWER IO17_OUT_INMS_5V == 'OFF'",5)
+wait_check("UUT POWER IO7_OUT_INMS_3P3V == 'OFF'", 5)
+wait_check("UUT POWER IO17_OUT_INMS_5V == 'OFF'", 5)
 
 puts("INMS has been powered off")
 wait(5)

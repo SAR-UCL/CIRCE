@@ -5,8 +5,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory and extract basic info'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM2_post_vibe'
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/06'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/06'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/03'
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL'
 
 
 '''This class extracts the packets from the files and prepares them for reading'''
@@ -19,6 +20,7 @@ class GetPackets():
             with open(os.path.join(os.getcwd(), filename), 'rb') as f:
                 a = ["{:02x}".format(c) for c in f.read()] #Opens as hex
                 b = a[90::264] #Remove 90B Header
+                self.filenames = os.path.basename(f.name)
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
         #print (self.rsp_ids)
@@ -41,6 +43,7 @@ class PacketInfo():
         info_s = GetPackets() #call GetPackets class
         info_s.load_packets()
 
+        print("Filename:", info_s.filenames)
         print("Number of files:", len(info_s.pair_hex))
         print("Number of packets in files:", info_s.packet_num)
 

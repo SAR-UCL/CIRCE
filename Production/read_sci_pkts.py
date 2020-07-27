@@ -3,8 +3,8 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM2_post_vibe' 
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses' 
 
 '''Opens all files in path as 8-bit'''
 all_files_binary = []
@@ -90,7 +90,7 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
 
-    plotGroupBurstData()
+    #plotGroupBurstData()
 
     '''Get 12-bit integers from max burst groups'''
     def getIntegersFromBurstMax(startIndex):
@@ -107,7 +107,7 @@ def extractScienceData():
             convert_to_int_max = [int(i,2) for i in j] #Converts to from 12-bit binary to integer
             twelvebit_bigendian_max.append(convert_to_int_max)
 
-        #print('Burst Max',twelvebit_bigendian_max)
+        print('Burst Max',twelvebit_bigendian_max)
         return(twelvebit_bigendian_max)
         
     '''Plot the data for the max burst groups'''
@@ -136,7 +136,7 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
     
-    #plotMaxBurstData()
+    plotMaxBurstData()
 
 '''Checks if there are science pkts'''
 if not sci_only:
