@@ -19,7 +19,8 @@ are returned then continue to 4) otherwise stop
 5. Open 'read_sci_pkts.py' and copy the path from 'read_pky_info.py', also
 onto line 8.
 
-6. Run the code
+6. Run the code (note the values print too. Comment lines 90 and 133 to
+prevent this)
 
 -----------------------------------------------------------------------------
 
