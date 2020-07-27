@@ -9,7 +9,7 @@ Python 3, and ideally 3.6, needs to be installed before proceeding.
 
 WORK INSTRUCTIONS
 
-1. Open 'read_pky_info.py' and define the file path on the 8th line
+1. Open 'read_pkt_info.py' and define the file path on the 8th line
 
 2. Run the code
 
