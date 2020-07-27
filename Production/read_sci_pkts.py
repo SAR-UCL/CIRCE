@@ -3,7 +3,8 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM2_post_vibe' 
 
 '''Opens all files in path as 8-bit'''
 all_files_binary = []
@@ -37,15 +38,17 @@ for x in pkt_size:
     div_header.append(y)
 #print ('Header information:', div_header)
 
+'''Identifies science pkts only'''
+sci_only = []
+for i in div_pkts:
+    if i [0] == '00001000': #this is 08 in hex
+        joined_pkts = "".join(j for j in i) #merge into single string
+        relist_pkts = (list(j for j in joined_pkts)) #split into list
+        sci_only.append(relist_pkts)
+#print ('Number of science pkts:', len(sci_only))
+
+
 def extractScienceData():
-    
-    '''Checks if there are science packets'''
-    sci_only = []
-    for i in div_pkts:
-        if i [0] == '00001000': #this is 08 in hex
-            joined_pkts = "".join(j for j in i) #merge into single string
-            relist_pkts = (list(j for j in joined_pkts)) #split into list
-            sci_only.append(relist_pkts)
 
     '''Get 12-bit integers from main burst groups'''
     def getIntegersFromBurstGroup(startIndex):
@@ -120,9 +123,9 @@ def extractScienceData():
        
 
         '''Extract specific data (IN DEVELOPMENT)'''
-        for i in burst_max_data:
-            burst_max_single_data = i[0]
-        print (burst_max_single_data)
+        #for i in burst_max_data:
+        #    burst_max_single_data = i[0]
+        #print (burst_max_single_data)
 
         '''Plot the data'''
         burst_max_hist = [i for j in burst_max_data for i in j if i != 0] #Flatten and remove zero values
@@ -133,6 +136,12 @@ def extractScienceData():
         plt.ylabel('Counts')
         plt.show()
     
-    plotMaxBurstData()
+    #plotMaxBurstData()
 
-extractScienceData()
+'''Checks if there are science pkts'''
+if not sci_only:
+    print('There are no science pkts')
+else:
+    print ('Number of science pkts:', len(sci_only))
+    extractScienceData()
+    
