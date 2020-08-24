@@ -2,11 +2,26 @@
 import glob 
 import os 
 import numpy as np
-from matplotlib import pyplot as plt
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-'''Set directory'''
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28'
-#path = r'Change me as necessary'''
+'''Directory testing from 29-07-20 in response to DSTL and BCT'''
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08/2020-07-28' #1 - Bad
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #3 - Good
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/Original/merged' #4 - Good
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Original' #5 - Bad
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Re-Run' #6 - Bad
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV' #7
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/2020-07-30' #8
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-30' #9 Good
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03'
+
+'''Other directories'''
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/2020-07-28/07'
 
 '''Main class for extracting science data from pkts'''
 class visualiseScience():
@@ -24,7 +39,7 @@ class visualiseScience():
                 all_files_binary.append(open_bits)
                 resp_ids.append(open_resps)
         print('Number of files:', len(all_files_binary))
-        #print('List of response ids:', resp_ids)
+
 
         '''Prints the file name for validation'''
         print ('File name:', filenames)
@@ -33,6 +48,13 @@ class visualiseScience():
         flatten_binary = [i for j in all_files_binary for i in j]
         num_of_pkts = (len(flatten_binary)//264)
         print('Number of packets in files:', num_of_pkts)
+
+        '''Prints the response id's with in a dictionary for ease of indexing'''
+        '''IN DEVELOPMENT AS ID's NEED CONVERTING TO HEX'''
+        #resp_index = list(range(0, len(flatten_binary)))
+        #resp_flattened = [i for j in resp_ids for i in j]
+        #resp_timestamp_dict = dict(zip(resp_index, resp_flattened))
+        #print('Index + Response ID',resp_timestamp_dict)
 
         '''Extracts the pkt info ONLY'''
         pkt_size = np.array_split(flatten_binary, num_of_pkts)
@@ -61,7 +83,7 @@ class visualiseScience():
         self.checkforScience()
 
     '''Checks if there are science pkts'''
-    def checkforScience(self):
+    def checkforScience(self):#
         if not self.sci_only:
             print('There are no science pkts')
         else:
@@ -87,12 +109,12 @@ class visualiseScience():
                 twelvebit_bigendian.append(convert_to_int)
             
             '''Comment out print to remove numbers'''
-            print("Main Burst", twelvebit_bigendian)
+            #print("Main Burst", twelvebit_bigendian)
             return(twelvebit_bigendian)
             
 
         '''Plot the data for the main burst groups'''
-        def plotGroupBurstData():
+        def callGroupBurstData():
 
             '''Map the function to the index positions'''
             burst_0 = getIntegersFromBurstGroup(42)
@@ -102,17 +124,67 @@ class visualiseScience():
             burst_1b = getIntegersFromBurstGroup(820)
             burst_2b = getIntegersFromBurstGroup(1012)
 
+            plotGroupBurstData()
+
+        def plotGroupBurstData():
+
             '''Plot the data'''
-            burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
+            #burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
             
             
-            plt.hist(burst_group_hist, bins = 75, alpha = 1)
-            plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
-            plt.xlabel('Energy (eV)')
-            plt.ylabel('Counts')
+            burst_group_hist = pd.Series([i for j in burst_group_data for i in j]) 
+            burst_group_hist_no_zero = [i for j in burst_group_data for i in j if i != 0] #Flatten and remove zero values
+            
+            #print('Number of all counts plotted:',len(burst_group_hist))
+            #print('Number of non-zero plotted:',len(burst_group_hist_no_zero))
+       
+            #plt.hist(burst_group_hist, bins = 75, alpha = 1)
+            #plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n Burst Count 0-16, Groups 1-6')
+            #plt.xlabel('Energy (eV)')
+            #plt.ylabel('Counts')
+            #plt.show()
+
+            '''Vetical Line Chart'''
+            y = burst_group_hist            
+            x = list(range(0, len(burst_group_hist)))
+            plt.title( 'Burst Count values of Science Packets \n payload_packets_20200730_151448.pkt \n HV-Lite-2' )
+            plt.ylabel('Burst Count')
+            plt.xlabel('Burst Value')
+            #plt.gca().invert_yaxis()
+
+            plt.plot(x, y)
             plt.show()
 
-        plotGroupBurstData()
+        def plotGroupBurstData():
+
+            '''Plot the data'''
+            #burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
+            burst_group_data = get_group_integers.burst_0
+            
+            burst_group_hist = pd.Series([i for j in burst_group_data for i in j]) 
+            burst_group_hist_no_zero = [i for j in burst_group_data for i in j if i != 0] #Flatten and remove zero values
+            
+            #print('Number of all counts plotted:',len(burst_group_hist))
+            #print('Number of non-zero plotted:',len(burst_group_hist_no_zero))
+       
+            #plt.hist(burst_group_hist, bins = 75, alpha = 1)
+            #plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n Burst Count 0-16, Groups 1-6')
+            #plt.xlabel('Energy (eV)')
+            #plt.ylabel('Counts')
+            #plt.show()
+
+            '''Vetical Line Chart'''
+            y = burst_group_hist            
+            x = list(range(0, len(burst_group_hist)))
+            plt.title( 'Burst Count values of Science Packets \n payload_packets_20200730_151448.pkt \n HV-Lite-2' )
+            plt.ylabel('Burst Count')
+            plt.xlabel('Burst Value')
+            #plt.gca().invert_yaxis()
+
+            plt.plot(x, y)
+            plt.show()
+
+        callGroupBurstData()
 
         '''Get 12-bit integers from max burst groups'''
         def getIntegersFromBurstMax(startIndex):
@@ -134,7 +206,7 @@ class visualiseScience():
             return(twelvebit_bigendian_max)
             
         '''Plot the data for the max burst groups'''
-        def plotMaxBurstData():
+        def callMaxBurstData():
             
             '''Map the function to the index positions'''
             burst_max_int_1 = getIntegersFromBurstMax(1214)
@@ -151,16 +223,21 @@ class visualiseScience():
             #print (burst_max_single_data)
 
             '''Plot the data'''
-            burst_max_hist = [i for j in burst_max_data for i in j if i != 0] #Flatten and remove zero values
+            burst_max_hist = [i for j in burst_max_data for i in j] 
+            burst_max_hist_no_zero = [i for j in burst_max_data for i in j if i != 0] #Flatten and remove zero values
             plt.hist(burst_max_hist, bins = 75, alpha = 1)
+            
+            #print('The number of 204 is:', burst_max_data.count(204))
+            print('Number of all counts plotted:',len(burst_max_hist))
+            print('Number of non-zero plotted:',len(burst_max_hist_no_zero))
+       
 
-            plt.title('EM1_08 Energy, Max Bursts Count 0-3, Groups 1-4')
+            plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n  Bursts Count 0-3, Groups 1-4')
             plt.xlabel('Energy (eV)')
             plt.ylabel('Counts')
             plt.show()
         
-        #plotMaxBurstData()
-
+        #callMaxBurstData()
 
 '''Creates an instance of the class (an Object)'''     
 go_science = visualiseScience()

@@ -3,10 +3,16 @@ import glob
 import os 
 import numpy as np
 from matplotlib import pyplot as plt
+import datetime
 
 '''Set directory'''
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08'
-#path = r'Change me as necessary'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08/2020-07-28' #
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #Looks Good
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/Original/01'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/2020-07-28/07'
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03'
 
 
 '''This class extracts the packets from the files and prepares them for reading'''
@@ -22,7 +28,7 @@ class GetPackets():
                 self.filenames = os.path.basename(f.name) #Print all filenames (Not working yet)
                 self.pair_hex.append(a)
                 self.rsp_ids.append(b)
-        #print (self.rsp_ids)
+        print ('Packet responses in order of appearance:',self.rsp_ids) #prints responce ID's in order
         self.prepare_packets()
 
     def prepare_packets(self):
@@ -34,6 +40,7 @@ class GetPackets():
             y = (list(x[90::])) #Remove 90B Header
             self.split_packets.append(y)
         #print (self.split_packets)
+        
 
 '''This class identifies the number and different types of packets'''
 class PacketInfo():
@@ -42,7 +49,7 @@ class PacketInfo():
         info_s = GetPackets() #call GetPackets class
         info_s.load_packets()
 
-        #print("Filename:", info_s.filenames)
+        print("Filename:", info_s.filenames)
         print("Number of files:", len(info_s.pair_hex))
         print("Number of packets in files:", info_s.packet_num)
 
@@ -115,4 +122,3 @@ class PacketInfo():
 '''Creates an instance of the class (an Object)'''      
 go_pkt_info = PacketInfo()
 go_pkt_info.basic_info()
-

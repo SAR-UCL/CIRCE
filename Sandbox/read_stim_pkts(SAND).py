@@ -7,8 +7,9 @@ from matplotlib import pyplot as plt
 '''Set directory and extract basic info'''
 #path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/06'
 #path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/03'
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL'
-
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #Looks good, but need script to validate
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03' #Good
 
 '''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
@@ -92,6 +93,8 @@ class StimPackets():
         flatten_stim = [item for items in stim_only for item in items]
         endian_pairs = [i+j for i,j in zip(flatten_stim[::2], flatten_stim[1::2])] #Pairs into fours
         self.little_endian = [int(h[2:4] + h[0:2], 16) for h in endian_pairs] #Converts to Little Endian
+        print (self.little_endian)
+        #print('Number of stim responses:', len(self.little_endian))
         
         #print("Number of STIM Packets:", len(flatten_stim)//172)
 
@@ -117,9 +120,9 @@ class StimPackets():
         '''
 
 '''Leave uncommented'''        
-main_info = PacketInfo()
-main_info.basic_info()
+#main_info = PacketInfo()
+#main_info.basic_info()
 
 '''Uncomment if STIM info needed'''
-#stim = StimPackets()
-#stim.prepare_stim_packs()
+stim = StimPackets()
+stim.prepare_stim_packs()
