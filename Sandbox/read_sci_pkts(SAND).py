@@ -7,24 +7,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-'''Directory testing from 29-07-20 in response to DSTL and BCT'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08/2020-07-28' #1 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #3 - Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/Original/merged' #4 - Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Original' #5 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Re-Run' #6 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV' #7
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/2020-07-30' #8
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-30' #9 Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03'
-
-'''Other directories'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/2020-07-28/07'
+'''Directory'''
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_HVLite' #Good, Science 100pkts
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_DITL_FM_6v1' #Good, Science 420pkts
 
 '''Main class for extracting science data from pkts'''
-class visualiseScience():
+class extractScience():
     '''Opens and prepares the files'''
     def openFiles(self):
         '''Opens all files in path as 8-bit'''
@@ -38,11 +26,9 @@ class visualiseScience():
 
                 all_files_binary.append(open_bits)
                 resp_ids.append(open_resps)
-        print('Number of files:', len(all_files_binary))
-
-
-        '''Prints the file name for validation'''
         print ('File name:', filenames)
+        print('Number of files:', len(all_files_binary))
+        
 
         '''Determines the number of packets inside the different files'''
         flatten_binary = [i for j in all_files_binary for i in j]
@@ -124,64 +110,13 @@ class visualiseScience():
             burst_1b = getIntegersFromBurstGroup(820)
             burst_2b = getIntegersFromBurstGroup(1012)
 
-            plotGroupBurstData()
-
-        def plotGroupBurstData():
 
             '''Plot the data'''
-            #burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
-            
-            
-            burst_group_hist = pd.Series([i for j in burst_group_data for i in j]) 
-            burst_group_hist_no_zero = [i for j in burst_group_data for i in j if i != 0] #Flatten and remove zero values
-            
-            #print('Number of all counts plotted:',len(burst_group_hist))
-            #print('Number of non-zero plotted:',len(burst_group_hist_no_zero))
-       
-            #plt.hist(burst_group_hist, bins = 75, alpha = 1)
-            #plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n Burst Count 0-16, Groups 1-6')
-            #plt.xlabel('Energy (eV)')
-            #plt.ylabel('Counts')
-            #plt.show()
-
-            '''Vetical Line Chart'''
-            y = burst_group_hist            
-            x = list(range(0, len(burst_group_hist)))
-            plt.title( 'Burst Count values of Science Packets \n payload_packets_20200730_151448.pkt \n HV-Lite-2' )
-            plt.ylabel('Burst Count')
-            plt.xlabel('Burst Value')
-            #plt.gca().invert_yaxis()
-
-            plt.plot(x, y)
-            plt.show()
-
-        def plotGroupBurstData():
-
-            '''Plot the data'''
-            #burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
-            burst_group_data = get_group_integers.burst_0
-            
-            burst_group_hist = pd.Series([i for j in burst_group_data for i in j]) 
-            burst_group_hist_no_zero = [i for j in burst_group_data for i in j if i != 0] #Flatten and remove zero values
-            
-            #print('Number of all counts plotted:',len(burst_group_hist))
-            #print('Number of non-zero plotted:',len(burst_group_hist_no_zero))
-       
-            #plt.hist(burst_group_hist, bins = 75, alpha = 1)
-            #plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n Burst Count 0-16, Groups 1-6')
-            #plt.xlabel('Energy (eV)')
-            #plt.ylabel('Counts')
-            #plt.show()
-
-            '''Vetical Line Chart'''
-            y = burst_group_hist            
-            x = list(range(0, len(burst_group_hist)))
-            plt.title( 'Burst Count values of Science Packets \n payload_packets_20200730_151448.pkt \n HV-Lite-2' )
-            plt.ylabel('Burst Count')
-            plt.xlabel('Burst Value')
-            #plt.gca().invert_yaxis()
-
-            plt.plot(x, y)
+            burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
+            plt.hist(burst_group_data, bins = 75, alpha = 1)
+            plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
+            plt.xlabel('Energy (eV)')
+            plt.ylabel('Counts')
             plt.show()
 
         callGroupBurstData()
@@ -240,5 +175,5 @@ class visualiseScience():
         #callMaxBurstData()
 
 '''Creates an instance of the class (an Object)'''     
-go_science = visualiseScience()
+go_science = extractScience()
 go_science.openFiles()

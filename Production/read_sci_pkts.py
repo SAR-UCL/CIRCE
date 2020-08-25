@@ -5,7 +5,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 '''Set directory'''
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28'
 #path = r'Change me as necessary'''
 
 '''Main class for extracting science data from pkts'''
@@ -87,7 +86,7 @@ class visualiseScience():
                 twelvebit_bigendian.append(convert_to_int)
             
             '''Comment out print to remove numbers'''
-            print("Main Burst", twelvebit_bigendian)
+            #print("Main Burst", twelvebit_bigendian)
             return(twelvebit_bigendian)
             
 
@@ -105,8 +104,7 @@ class visualiseScience():
             '''Plot the data'''
             burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
             
-            
-            plt.hist(burst_group_hist, bins = 75, alpha = 1)
+            plt.hist(burst_group_data, bins = 75, alpha = 1)
             plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
             plt.xlabel('Energy (eV)')
             plt.ylabel('Counts')

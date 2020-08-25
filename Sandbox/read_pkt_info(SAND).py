@@ -6,28 +6,9 @@ from matplotlib import pyplot as plt
 import datetime
 
 '''Directory testing from 29-07-20 in response to DSTL and BCT'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08/2020-07-28' #1 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #3 - Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/Original/merged' #4 - Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Original' #5 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/Re-Run' #6 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV' #7
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/HV-Lite/2020-07-30' #8 Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-30' #9 Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03' #Good
-#path = r'/Users/SAR/Downloads/QB50' 
-
-'''Post Thermal Testing for FM-1'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Post Thermal/INMS_00' #Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Post Thermal/INMS_01' #Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Post Thermal/INMS_02' #Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Post Thermal/INMS_03' #Good
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Post Thermal/INMS_07'
-
-'''Other directories'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28' #2 - Bad
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/2020-07-28/07'
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_HVLite' #Good, Science 100pkts
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_DITL_FM_6v1' #Good, Science 420pkts
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM2/BCT-INMS FM2 Post Rework Functional - 21 Aug 2020/07_INMS' 
 
 
 '''This class extracts the packets from the files and prepares them for reading'''
