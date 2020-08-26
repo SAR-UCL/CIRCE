@@ -11,9 +11,12 @@ path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020
 
 '''Class for extracting science data from pkts'''
 class extractScience():
+    
     '''Opens and prepares the files'''
     def openFiles(self):
+        
         global pkt_filename
+
         '''Opens all files in path as 8-bit'''
         all_files_binary = []
         resp_ids = []
@@ -155,9 +158,9 @@ class extractScience():
             #maxBurstPandaConv ["Burst Max 3"] = [a for b in burst_max_int_4 for a in b]
             
             '''Merge dataframes and export as .csv'''
-            merge_burst_data = pd.concat([groupBurstPandaConv, maxBurstPandaConv], axis=1)
-            extracted_filename = path + "/" + pkt_filename[:-4] + ".csv" # -4 removes '.pktß'
-            merge_burst_data.to_csv(extracted_filename, index = False, header = True)
+            #merge_burst_data = pd.concat([groupBurstPandaConv, maxBurstPandaConv], axis=1)
+            extracted_filename = path + "/" + pkt_filename[:-4] + ".csv" # -4 removes '.pkts'
+            #merge_burst_data.to_csv(extracted_filename, index = False, header = True)
             #print ("Exported burst csv data: \n", merge_burst_data)
 
         getBurstData()
@@ -167,19 +170,49 @@ class visualiseScience():
     
     load_science = extractScience()
     load_science.openFiles()
+    
+    #global load_burst_csv_data    
 
     #burst_cats = ['Neut Burst 0','Neut Burst 1','Neut Burst 2','Ion Burst 0', 'Ion Burst 1', 'Ion Burst 2', 'Neut Max 1', 'Ion Max 1','Neut Max 2','Ion Max 2']
     #load_burst_csv_data = pd.read_csv(extracted_filename, names = burst_cats, skiprows=1)
-    load_burst_csv_data = pd.read_csv(extracted_filename)
+    #load_burst_csv_data = pd.read_csv(extracted_filename)
     #print('Imported burst csv data: \n', load_burst_csv_data)
 
-    sci_pkt_hist = load_burst_csv_data['nb0']
+    def plotScienceHist():
 
-    plt.hist(sci_pkt_hist, bins = 75, alpha = 1)
-    plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
-    plt.xlabel('Energy (eV)')
-    plt.ylabel('Counts')
-    plt.show()
+        #load_ion_data = pd.read_csv(extracted_filename, usecols =['ib0','ib1','ib2'])
+        load_ion_data = pd.read_csv(extracted_filename)
 
+        #sci_pkt_hist = load_ion_data[['ib0','ib1','ib2']]
+        sci_pkt_hist = load_ion_data ['ib1']
+        plt.hist(sci_pkt_hist, bins = 75, alpha = 1)
+        
+        plt.title('DITL Energy, Burst Count 0-16, Groups 1 \n' + str(pkt_filename))
+        plt.xlabel('Energy (eV)')
+        plt.ylabel('Counts')
+
+        '''
+        try:
+            save_fig = path + "/" + pkt_filename[16:-4] + '_hist' + ".png"    
+            plt.savefig(save_fig, bbox_inches='tight')
+            print ("File saved")
+        except IOError:
+            print ("File creation failed")'''
+        
+        plt.show()
+    
+    def plotSciencePlot():
+
+        x = load_burst_csv_data['nb0']
+        y = load_burst_csv_data['nb1']
+        plt.plot(x,y)
+
+        plt.show()
+        
+
+    plotScienceHist()
+    #plotSciencePlot()
+    
 
 go_science = visualiseScience()
+

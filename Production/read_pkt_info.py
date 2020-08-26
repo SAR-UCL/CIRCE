@@ -6,14 +6,7 @@ from matplotlib import pyplot as plt
 import datetime
 
 '''Set directory'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/EM1/08/2020-07-28' #
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL' #Looks Good
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL'
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/DITL/2020-07-28'
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/Original/01'
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Cold Plateau Dwell/2020-07-28/07'
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/Data In/Testing/Responses/FM1 Hot Plateau Dwell/DITL/2020-08-03'
-
+#path = r'Change me as necessary'''
 
 '''This class extracts the packets from the files and prepares them for reading'''
 class GetPackets():
@@ -98,7 +91,7 @@ class PacketInfo():
         
         #print("Number of STIM Packets:", len(flatten_stim)//172)
 
-        self.plot_stim_packs()
+        #self.plot_stim_packs()
 
     def plot_stim_packs(self):
         stim_data = self.little_endian

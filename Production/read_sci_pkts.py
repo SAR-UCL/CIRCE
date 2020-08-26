@@ -130,7 +130,7 @@ class visualiseScience():
             plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
             plt.xlabel('Energy (eV)')
             plt.ylabel('Counts')
-            #plt.show()
+            plt.show()
 
         plotGroupBurstData()
 
