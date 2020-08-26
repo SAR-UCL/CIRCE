@@ -3,18 +3,17 @@ import glob
 import os 
 import numpy as np
 import pandas as pd
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import seaborn as sns
+from matplotlib import pyplot as plt
 
-'''Directory'''
-#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_HVLite' #Good, Science 100pkts
-path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_DITL_FM_6v1' #Good, Science 420pkts
+'''Set directory'''
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_HVLite' #Good, Science 100pkts
+#path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_DITL_FM_6v1' #Good, Science 420pkts
 
-'''Main class for extracting science data from pkts'''
+'''Class for extracting science data from pkts'''
 class extractScience():
     '''Opens and prepares the files'''
     def openFiles(self):
+        global pkt_filename
         '''Opens all files in path as 8-bit'''
         all_files_binary = []
         resp_ids = []
@@ -22,25 +21,20 @@ class extractScience():
             with open(os.path.join(os.getcwd(), filename), 'rb') as f:
                 open_bits = list("{0:08b}".format(c) for c in f.read()) #Opens as hex
                 open_resps = open_bits[90::264]
-                filenames = os.path.basename(f.name) #Filenames
+                pkt_filename = os.path.basename(f.name) #pkt_filename
 
                 all_files_binary.append(open_bits)
                 resp_ids.append(open_resps)
-        print ('File name:', filenames)
         print('Number of files:', len(all_files_binary))
-        
+        #print('List of response ids:', resp_ids)
+
+        '''Prints the file name for validation'''
+        print ('File name:', pkt_filename)
 
         '''Determines the number of packets inside the different files'''
         flatten_binary = [i for j in all_files_binary for i in j]
         num_of_pkts = (len(flatten_binary)//264)
         print('Number of packets in files:', num_of_pkts)
-
-        '''Prints the response id's with in a dictionary for ease of indexing'''
-        '''IN DEVELOPMENT AS ID's NEED CONVERTING TO HEX'''
-        #resp_index = list(range(0, len(flatten_binary)))
-        #resp_flattened = [i for j in resp_ids for i in j]
-        #resp_timestamp_dict = dict(zip(resp_index, resp_flattened))
-        #print('Index + Response ID',resp_timestamp_dict)
 
         '''Extracts the pkt info ONLY'''
         pkt_size = np.array_split(flatten_binary, num_of_pkts)
@@ -69,7 +63,7 @@ class extractScience():
         self.checkforScience()
 
     '''Checks if there are science pkts'''
-    def checkforScience(self):#
+    def checkforScience(self):
         if not self.sci_only:
             print('There are no science pkts')
         else:
@@ -96,31 +90,9 @@ class extractScience():
             
             '''Comment out print to remove numbers'''
             #print("Main Burst", twelvebit_bigendian)
-            return(twelvebit_bigendian)
-            
-
-        '''Plot the data for the main burst groups'''
-        def callGroupBurstData():
-
-            '''Map the function to the index positions'''
-            burst_0 = getIntegersFromBurstGroup(42)
-            burst_1 = getIntegersFromBurstGroup(234)
-            burst_2 = getIntegersFromBurstGroup(426)
-            burst_0b = getIntegersFromBurstGroup(628)
-            burst_1b = getIntegersFromBurstGroup(820)
-            burst_2b = getIntegersFromBurstGroup(1012)
-
-
-            '''Plot the data'''
-            burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
-            plt.hist(burst_group_data, bins = 75, alpha = 1)
-            plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
-            plt.xlabel('Energy (eV)')
-            plt.ylabel('Counts')
-            plt.show()
-
-        callGroupBurstData()
-
+            #return(twelvebit_bigendian)
+            return ([a for b in twelvebit_bigendian for a in b]) #flattens out results
+        
         '''Get 12-bit integers from max burst groups'''
         def getIntegersFromBurstMax(startIndex):
             
@@ -137,43 +109,77 @@ class extractScience():
                 twelvebit_bigendian_max.append(convert_to_int_max)
             
             '''Comment out print to remove numbers'''
-            print('Burst Max',twelvebit_bigendian_max)
-            return(twelvebit_bigendian_max)
+            #print('Burst Max',twelvebit_bigendian_max)
+            #return(twelvebit_bigendian_max)
+            return ([a for b in twelvebit_bigendian_max for a in b]) #flattens out results
             
-        '''Plot the data for the max burst groups'''
-        def callMaxBurstData():
-            
+
+        ''''Gets the burst data for both the groups and maximums'''
+        def getBurstData():
+            global extracted_filename
+
             '''Map the function to the index positions'''
-            burst_max_int_1 = getIntegersFromBurstMax(1214)
-            burst_max_int_2 = getIntegersFromBurstMax(1260)
-            burst_max_int_3 = getIntegersFromBurstMax(1306)
-            burst_max_int_4 = getIntegersFromBurstMax(1352)
+            nb_0 = getIntegersFromBurstGroup(42)
+            nb_1 = getIntegersFromBurstGroup(234)
+            nb_2 = getIntegersFromBurstGroup(426)
+            ib_0 = getIntegersFromBurstGroup(628)
+            ib_1 = getIntegersFromBurstGroup(820)
+            ib_2 = getIntegersFromBurstGroup(1012)
 
-            burst_max_data = burst_max_int_1 + burst_max_int_2 + burst_max_int_3 + burst_max_int_4
-        
+            nbm_1 = getIntegersFromBurstMax(1214)
+            ibm_1 = getIntegersFromBurstMax(1260)
+            nbm_2 = getIntegersFromBurstMax(1306)
+            ibm_2 = getIntegersFromBurstMax(1352)
 
-            '''Extract specific data (IN DEVELOPMENT)'''
-            #for i in burst_max_data:
-            #    burst_max_single_data = i[0]
-            #print (burst_max_single_data)
-
-            '''Plot the data'''
-            burst_max_hist = [i for j in burst_max_data for i in j] 
-            burst_max_hist_no_zero = [i for j in burst_max_data for i in j if i != 0] #Flatten and remove zero values
-            plt.hist(burst_max_hist, bins = 75, alpha = 1)
+            '''Convert to Panda Dataframes'''
+            group_burst_data = {'nb0':nb_0,'nb1':nb_1,'nb2':nb_2,'ib0':ib_0,'ib1':ib_1,'ib2':ib_2}
+            max_burst_data = {'nbm1':nbm_1,'ibm1':ibm_1,'nbm2':nbm_2,'ibm2':ibm_2}
+            groupBurstPandaConv = pd.DataFrame(group_burst_data)
+            maxBurstPandaConv = pd.DataFrame(max_burst_data)
             
-            #print('The number of 204 is:', burst_max_data.count(204))
-            print('Number of all counts plotted:',len(burst_max_hist))
-            print('Number of non-zero plotted:',len(burst_max_hist_no_zero))
-       
+            #groupBurstPandaConv = pd.DataFrame()
+            #groupBurstPandaConv ["Burst 0"] = burst_0 #if flattened
+            #groupBurstPandaConv ["Burst 1"] = burst_1 #if flattened 
 
-            plt.title('HV-Lite 2020-07-30 \n payload_packets_20200730_151448.pkt\n  Bursts Count 0-3, Groups 1-4')
-            plt.xlabel('Energy (eV)')
-            plt.ylabel('Counts')
-            plt.show()
-        
-        #callMaxBurstData()
+            #groupBurstPandaConv ["Burst 0"] = [a for b in burst_0 for a in b]
+            #groupBurstPandaConv ["Burst 1"] = [a for b in burst_1 for a in b]
+            #groupBurstPandaConv ["Burst 2"] = [a for b in burst_2 for a in b]
+            #groupBurstPandaConv ["Burst 0b"] = [a for b in burst_0b for a in b]
+            #groupBurstPandaConv ["Burst 1b"] = [a for b in burst_1b for a in b]
+            #groupBurstPandaConv ["Burst 2b"] = [a for b in burst_2b for a in b]
 
-'''Creates an instance of the class (an Object)'''     
-go_science = extractScience()
-go_science.openFiles()
+            #maxBurstPandaConv = pd.DataFrame()
+            #maxBurstPandaConv ["Burst Max 0"] = [a for b in burst_max_int_1 for a in b]
+            #maxBurstPandaConv ["Burst Max 1"] = [a for b in burst_max_int_2 for a in b]
+            #maxBurstPandaConv ["Burst Max 2"] = [a for b in burst_max_int_3 for a in b]
+            #maxBurstPandaConv ["Burst Max 3"] = [a for b in burst_max_int_4 for a in b]
+            
+            '''Merge dataframes and export as .csv'''
+            merge_burst_data = pd.concat([groupBurstPandaConv, maxBurstPandaConv], axis=1)
+            extracted_filename = path + "/" + pkt_filename[:-4] + ".csv" # -4 removes '.pktß'
+            merge_burst_data.to_csv(extracted_filename, index = False, header = True)
+            #print ("Exported burst csv data: \n", merge_burst_data)
+
+        getBurstData()
+            
+'''Class for plotting science data from extractScience() class'''     
+class visualiseScience():
+    
+    load_science = extractScience()
+    load_science.openFiles()
+
+    #burst_cats = ['Neut Burst 0','Neut Burst 1','Neut Burst 2','Ion Burst 0', 'Ion Burst 1', 'Ion Burst 2', 'Neut Max 1', 'Ion Max 1','Neut Max 2','Ion Max 2']
+    #load_burst_csv_data = pd.read_csv(extracted_filename, names = burst_cats, skiprows=1)
+    load_burst_csv_data = pd.read_csv(extracted_filename)
+    #print('Imported burst csv data: \n', load_burst_csv_data)
+
+    sci_pkt_hist = load_burst_csv_data['nb0']
+
+    plt.hist(sci_pkt_hist, bins = 75, alpha = 1)
+    plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('Counts')
+    plt.show()
+
+
+go_science = visualiseScience()

@@ -2,10 +2,13 @@
 import glob 
 import os 
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 
 '''Set directory'''
 #path = r'Change me as necessary'''
+path = r'/Users/SAR/OneDrive - University College London/PhD/CIRCE/TVAC/FM1/2020-07-30_INMS_Script_HVLite' #Good, Science 100pkts
+
 
 '''Main class for extracting science data from pkts'''
 class visualiseScience():
@@ -101,14 +104,33 @@ class visualiseScience():
             burst_1b = getIntegersFromBurstGroup(820)
             burst_2b = getIntegersFromBurstGroup(1012)
 
+
+            data = pd.DataFrame()
+            #data ["Filename"] =
+            data ["Burst 0"] = burst_0
+            data ["Burst 1"] = burst_1 
+            data ["Burst 2"] = burst_2 
+            data ["Burst 0b"] = burst_0b 
+            data ["Burst 1b"] = burst_1b 
+            data ["Burst 2b"] = burst_2b 
+            print(data)
+
+            '''
+            #Output to a .csv
+            if not data.to_csv (self.export_file, index = False, header=True):
+                print (self.user_filename, "created")
+            else:
+                print (self.user_filename, "creation FAILED")'''
+
             '''Plot the data'''
             burst_group_data = burst_0 + burst_1 + burst_2 + burst_0b + burst_1b + burst_2b
+            flatten_bgp = [a for b in burst_group_data for a in b]
             
-            plt.hist(burst_group_data, bins = 75, alpha = 1)
+            plt.hist(flatten_bgp, bins = 75, alpha = 1)
             plt.title('DITL Energy, Burst Count 0-16, Groups 1-6')
             plt.xlabel('Energy (eV)')
             plt.ylabel('Counts')
-            plt.show()
+            #plt.show()
 
         plotGroupBurstData()
 
